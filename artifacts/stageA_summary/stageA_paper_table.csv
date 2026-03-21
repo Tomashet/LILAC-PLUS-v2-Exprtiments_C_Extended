@@ -1,0 +1,7 @@
+method,regime,reward,violations,near_misses,ep_length
+baseline_sac,nonstationary_seen,187.60 ± 4.54,166.53 ± 0.18,8.94 ± 1.23,182.92 ± 4.79
+baseline_sac,nonstationary_unseen,187.12 ± 2.20,163.08 ± 1.00,5.51 ± 0.71,185.52 ± 1.93
+baseline_sac,stationary,193.53 ± 6.24,173.68 ± 7.51,11.13 ± 6.46,190.08 ± 4.72
+lilac_none,nonstationary_seen,189.85 ± 7.90,168.93 ± 8.59,12.30 ± 1.42,187.42 ± 7.16
+lilac_none,nonstationary_unseen,186.81 ± 2.36,163.25 ± 5.04,8.06 ± 6.26,186.87 ± 1.40
+lilac_none,stationary,175.45 ± 31.29,160.26 ± 8.39,3.70 ± 0.32,186.24 ± 7.26

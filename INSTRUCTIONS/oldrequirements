@@ -1,0 +1,9 @@
+gymnasium>=0.29
+highway-env>=1.8
+stable-baselines3>=2.3
+torch>=2.1
+numpy>=1.23
+pandas>=2.0
+matplotlib>=3.7
+tqdm>=4.66
+tensorboard>=2.10

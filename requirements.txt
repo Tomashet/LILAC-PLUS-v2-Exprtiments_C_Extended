@@ -1,0 +1,24 @@
+# Core numerical
+numpy>=1.23
+scipy>=1.10
+
+# RL + env
+gymnasium>=0.29
+highway-env>=1.8
+
+# Stable Baselines3 (with progress bar dependencies)
+stable-baselines3[extra]>=2.2.1
+
+# PyTorch (CPU version; remove if you manage separately)
+torch>=2.0
+
+# Logging / plotting
+matplotlib>=3.7
+pandas>=2.0
+
+# Progress bar (included in sb3[extra], but explicit for clarity)
+tqdm>=4.65
+rich>=13.0
+
+# Optional but useful
+tensorboard>=2.14

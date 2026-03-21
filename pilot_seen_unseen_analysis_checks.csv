@@ -1,0 +1,7 @@
+comparison,baseline,full,status
+seen: shield_count,0.0,39.93413173652694,PASS
+seen: action_correction_mean,0.0,0.6915048044889979,PASS
+seen: violation_count,180.46601941747574,39.93413173652694,PASS
+unseen: shield_count,0.0,39.93413173652694,PASS
+unseen: action_correction_mean,0.0,0.6915048044889979,PASS
+unseen: violation_count,180.46601941747574,39.93413173652694,PASS

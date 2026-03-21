@@ -1,0 +1,3 @@
+ctx_id,ctx_tuple,rows,metric_name,current_tau_violation_mean,current_tau_near_miss_mean,current_violation_rate,current_near_miss_rate,q80,q95,recommended_tau_violation,recommended_tau_near_miss,delta_violation_vs_current,delta_near_miss_vs_current
+high|aggr|noisy,"('high', 'aggr', 'noisy')",10000,proxy_cost,2.0,8.0,0.191,0.0,1.9607515096664432,2.707141721248626,1.9607515096664432,2.707141721248626,-0.03924849033355682,-5.292858278751374
+low|calm|clean,"('low', 'calm', 'clean')",35888,proxy_cost,2.0044695922056053,5.021091852997808,0.19229268836379848,0.03073450735621935,1.9799491167068484,2.6755370706319845,1.9799491167068484,2.6755370706319845,-0.02452047549875691,-2.345554782365823

@@ -1,0 +1,7 @@
+check,baseline_sac,lilac_none,status
+method_names_distinct,baseline_sac,lilac_none,PASS
+lilac_flag_enabled_for_lilac_none,,,CHECK
+lilac_flag_disabled_for_baseline,,,PASS
+thresholds_disabled_for_both,False,False,PASS
+reward_diff_nonzero,158.94911154545454,162.00472249999999,PASS
+violation_diff_nonzero,155.27272727272728,161.5,PASS

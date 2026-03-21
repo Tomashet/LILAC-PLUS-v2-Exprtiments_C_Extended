@@ -1,0 +1,10 @@
+Threshold calibration outputs
+rows: 600
+runs: 1
+contexts: 6
+
+Saved: artifacts\calibration\clearance_quantiles_by_context.csv
+Saved: artifacts\calibration\clearance_quantiles_global.csv
+Saved: artifacts\calibration\recommended_thresholds_by_context.csv
+Saved: artifacts\calibration\recommended_thresholds_patch.json
+Saved: artifacts\calibration\calibration_meta.json

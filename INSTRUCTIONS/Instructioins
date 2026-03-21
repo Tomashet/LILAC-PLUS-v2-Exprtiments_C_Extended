@@ -1,0 +1,367 @@
+###HOW TO RUN EVERYTHING
+python -m scripts.run_all --seeds 0,1,2 --steps_discrete 300000 --steps_continuous 600000 --episodes 200
+#########################################################################
+### RESTRICT TO MERGE ONLY (OPTIONAL)
+python -m scripts.run_all --only merge
+########################################################################
+###After it finishes, you’ll have LaTeX tables in:
+paper_tables/
+  results_highway_all.tex
+  results_merge_all.tex
+  results_all.tex
+###########################################################################
+# This will write:
+#paper_tables/results_discrete.tex
+#paper_tables/results_continuous.tex
+#plus (with --split_by_env):
+#paper_tables/results_highway_discrete.tex
+#paper_tables/results_highway_continuous.tex
+#paper_tables/results_merge_discrete.tex
+#paper_tables/results_merge_continuous.tex
+python -m scripts.export_paper_tables \
+  --pattern "runs/*_seed*" \
+  --out_dir paper_tables \
+  --split_by_env
+############################################################################
+#Also integrated into run_all
+
+#Now python -m scripts.run_all ... will automatically generate these paper-friendly tables in paper_tables/ after finishing the runs and exporting the original tables.
+###################################################################################
+####################################################################################
+#################################################################################
+
+It can run on **Google Colab**, but with two important notes:
+
+1. **highway-env is CPU-based** (it won’t really use GPU much), so Colab won’t be dramatically faster than your laptop unless your laptop is very slow.
+2. It **does work fine in Colab**, as long as you install dependencies correctly.
+### What you do in Colab
+1. Upload the repo zip (`safe-nonstationary-driving-experiments_v4.zip`) to Colab
+2. Unzip it
+3. Install requirements
+4. Run training scripts
+Example Colab cell:
+***bash
+!unzip -q safe-nonstationary-driving-experiments_v4.zip -d exp
+%cd exp
+!pip -q install -r requirements.txt
+Then train (example):
+***bash
+!python -m scripts.train_discrete --preset merge_discrete_default --algo dqn --total_steps 200000 --seed 0
+***
+*** One more thing
+Colab sometimes has issues rendering environments, but since you’re **not** using `render()`, you’re safe.
+If you want, I can generate a clean **Colab notebook (`.ipynb`)** that runs:
+
+* one discrete run
+* one continuous run
+* one ablation
+* exports the LaTeX tables
+##########################################################
+###HOW TO RUN EVERYTHING
+python -m scripts.run_all --seeds 0,1,2 --steps_discrete 300000 --steps_continuous 600000 --episodes 200
+#########################################################################
+### RESTRICT TO MERGE ONLY (OPTIONAL)
+python -m scripts.run_all --only merge
+########################################################################
+###After it finishes, you’ll have LaTeX tables in:
+paper_tables/
+  results_highway_all.tex
+  results_merge_all.tex
+  results_all.tex
+###########################################################################
+# This will write:
+#paper_tables/results_discrete.tex
+#paper_tables/results_continuous.tex
+#plus (with --split_by_env):
+#paper_tables/results_highway_discrete.tex
+#paper_tables/results_highway_continuous.tex
+#paper_tables/results_merge_discrete.tex
+#paper_tables/results_merge_continuous.tex
+python -m scripts.export_paper_tables \
+  --pattern "runs/*_seed*" \
+  --out_dir paper_tables \
+  --split_by_env
+############################################################################
+#Also integrated into run_all
+
+#Now python -m scripts.run_all ... will automatically generate these paper-friendly tables in paper_tables/ after finishing the runs and exporting the original tables.
+###################################################################################
+####################################################################################
+#################################################################################
+
+It can run on **Google Colab**, but with two important notes:
+
+1. **highway-env is CPU-based** (it won’t really use GPU much), so Colab won’t be dramatically faster than your laptop unless your laptop is very slow.
+2. It **does work fine in Colab**, as long as you install dependencies correctly.
+### What you do in Colab
+1. Upload the repo zip (`safe-nonstationary-driving-experiments_v4.zip`) to Colab
+2. Unzip it
+3. Install requirements
+4. Run training scripts
+Example Colab cell:
+***bash
+!unzip -q safe-nonstationary-driving-experiments_v4.zip -d exp
+%cd exp
+!pip -q install -r requirements.txt
+Then train (example):
+***bash
+!python -m scripts.train_discrete --preset merge_discrete_default --algo dqn --total_steps 200000 --seed 0
+***
+*** One more thing
+Colab sometimes has issues rendering environments, but since you’re **not** using `render()`, you’re safe.
+If you want, I can generate a clean **Colab notebook (`.ipynb`)** that runs:
+
+* one discrete run
+* one continuous run
+* one ablation
+* exports the LaTeX tables
+##########################################################
+################## FOR COLAB ##############################
+A clean Colab notebook that runs:
+
+1. **One discrete run** (DQN on `merge-v0`)
+2. **One continuous run** (SAC on `highway-v0`)
+3. **One ablation** (DQN with `--no_mpc`)
+4. **Exports paper-ready LaTeX tables** (discrete vs continuous + per-env splits)
+5. **Demonstrates how constraints work** by showing, step-by-step, when the **safety shield overrides actions**, with a small logged table + an aggregate comparison shield ON vs OFF.
+
+📓 **Download the notebook (.ipynb):**
+[Download Colab_Proactive_Safety_Demo.ipynb](sandbox:/mnt/data/Colab_Proactive_Safety_Demo.ipynb)
+################################################
+###HOW TO RUN EVERYTHING
+python -m scripts.run_all --seeds 0,1,2 --steps_discrete 300000 --steps_continuous 600000 --episodes 200
+#########################################################################
+### RESTRICT TO MERGE ONLY (OPTIONAL)
+python -m scripts.run_all --only merge
+########################################################################
+###After it finishes, you’ll have LaTeX tables in:
+paper_tables/
+  results_highway_all.tex
+  results_merge_all.tex
+  results_all.tex
+###########################################################################
+# This will write:
+#paper_tables/results_discrete.tex
+#paper_tables/results_continuous.tex
+#plus (with --split_by_env):
+#paper_tables/results_highway_discrete.tex
+#paper_tables/results_highway_continuous.tex
+#paper_tables/results_merge_discrete.tex
+#paper_tables/results_merge_continuous.tex
+python -m scripts.export_paper_tables \
+  --pattern "runs/*_seed*" \
+  --out_dir paper_tables \
+  --split_by_env
+############################################################################
+#Also integrated into run_all
+
+#Now python -m scripts.run_all ... will automatically generate these paper-friendly tables in paper_tables/ after finishing the runs and exporting the original tables.
+###################################################################################
+####################################################################################
+#################################################################################
+
+It can run on **Google Colab**, but with two important notes:
+
+1. **highway-env is CPU-based** (it won’t really use GPU much), so Colab won’t be dramatically faster than your laptop unless your laptop is very slow.
+2. It **does work fine in Colab**, as long as you install dependencies correctly.
+### What you do in Colab
+1. Upload the repo zip (`safe-nonstationary-driving-experiments_v4.zip`) to Colab
+2. Unzip it
+3. Install requirements
+4. Run training scripts
+Example Colab cell:
+***bash
+!unzip -q safe-nonstationary-driving-experiments_v4.zip -d exp
+%cd exp
+!pip -q install -r requirements.txt
+Then train (example):
+***bash
+!python -m scripts.train_discrete --preset merge_discrete_default --algo dqn --total_steps 200000 --seed 0
+***
+*** One more thing
+Colab sometimes has issues rendering environments, but since you’re **not** using `render()`, you’re safe.
+If you want, I can generate a clean **Colab notebook (`.ipynb`)** that runs:
+
+* one discrete run
+* one continuous run
+* one ablation
+* exports the LaTeX tables
+##########################################################
+Colab notebook that runs:
+
+1. **One discrete run** (DQN on `merge-v0`)
+2. **One continuous run** (SAC on `highway-v0`)
+3. **One ablation** (DQN with `--no_mpc`)
+4. **Exports paper-ready LaTeX tables** (discrete vs continuous + per-env splits)
+5. **Demonstrates how constraints work** by showing, step-by-step, when the **safety shield overrides actions**, with a small logged table + an aggregate comparison shield ON vs OFF.
+
+📓 **Download the notebook (.ipynb):**
+[Download Colab_Proactive_Safety_Demo.ipynb](sandbox:/mnt/data/Colab_Proactive_Safety_Demo.ipynb)
+
+###HOW TO RUN EVERYTHING
+python -m scripts.run_all --seeds 0,1,2 --steps_discrete 300000 --steps_continuous 600000 --episodes 200
+#########################################################################
+### RESTRICT TO MERGE ONLY (OPTIONAL)
+python -m scripts.run_all --only merge
+########################################################################
+###After it finishes, you’ll have LaTeX tables in:
+paper_tables/
+  results_highway_all.tex
+  results_merge_all.tex
+  results_all.tex
+###########################################################################
+# This will write:
+#paper_tables/results_discrete.tex
+#paper_tables/results_continuous.tex
+#plus (with --split_by_env):
+#paper_tables/results_highway_discrete.tex
+#paper_tables/results_highway_continuous.tex
+#paper_tables/results_merge_discrete.tex
+#paper_tables/results_merge_continuous.tex
+python -m scripts.export_paper_tables \
+  --pattern "runs/*_seed*" \
+  --out_dir paper_tables \
+  --split_by_env
+############################################################################
+#Also integrated into run_all
+
+#Now python -m scripts.run_all ... will automatically generate these paper-friendly tables in paper_tables/ after finishing the runs and exporting the original tables.
+###################################################################################
+####################################################################################
+#################################################################################
+
+It can run on **Google Colab**, but with two important notes:
+
+1. **highway-env is CPU-based** (it won’t really use GPU much), so Colab won’t be dramatically faster than your laptop unless your laptop is very slow.
+2. It **does work fine in Colab**, as long as you install dependencies correctly.
+### What you do in Colab
+1. Upload the repo zip (`safe-nonstationary-driving-experiments_v4.zip`) to Colab
+2. Unzip it
+3. Install requirements
+4. Run training scripts
+Example Colab cell:
+***bash
+!unzip -q safe-nonstationary-driving-experiments_v4.zip -d exp
+%cd exp
+!pip -q install -r requirements.txt
+Then train (example):
+***bash
+!python -m scripts.train_discrete --preset merge_discrete_default --algo dqn --total_steps 200000 --seed 0
+***
+*** One more thing
+Colab sometimes has issues rendering environments, but since you’re **not** using `render()`, you’re safe.
+If you want, I can generate a clean **Colab notebook (`.ipynb`)** that runs:
+
+* one discrete run
+* one continuous run
+* one ablation
+* exports the LaTeX tables
+##########################################################
+ a clean Colab notebook that runs:
+
+1. **One discrete run** (DQN on `merge-v0`)
+2. **One continuous run** (SAC on `highway-v0`)
+3. **One ablation** (DQN with `--no_mpc`)
+4. **Exports paper-ready LaTeX tables** (discrete vs continuous + per-env splits)
+5. **Demonstrates how constraints work** by showing, step-by-step, when the **safety shield overrides actions**, with a small logged table + an aggregate comparison shield ON vs OFF.
+
+📓 **Download the notebook (.ipynb):**
+[Download Colab_Proactive_Safety_Demo.ipynb](sandbox:/mnt/data/Colab_Proactive_Safety_Demo.ipynb)
+
+###HOW TO RUN EVERYTHING
+python -m scripts.run_all --seeds 0,1,2 --steps_discrete 300000 --steps_continuous 600000 --episodes 200
+#########################################################################
+### RESTRICT TO MERGE ONLY (OPTIONAL)
+python -m scripts.run_all --only merge
+########################################################################
+###After it finishes, you’ll have LaTeX tables in:
+paper_tables/
+  results_highway_all.tex
+  results_merge_all.tex
+  results_all.tex
+###########################################################################
+# This will write:
+#paper_tables/results_discrete.tex
+#paper_tables/results_continuous.tex
+#plus (with --split_by_env):
+#paper_tables/results_highway_discrete.tex
+#paper_tables/results_highway_continuous.tex
+#paper_tables/results_merge_discrete.tex
+#paper_tables/results_merge_continuous.tex
+python -m scripts.export_paper_tables \
+  --pattern "runs/*_seed*" \
+  --out_dir paper_tables \
+  --split_by_env
+############################################################################
+#Also integrated into run_all
+
+#Now python -m scripts.run_all ... will automatically generate these paper-friendly tables in paper_tables/ after finishing the runs and exporting the original tables.
+###################################################################################
+####################################################################################
+#################################################################################
+
+It can run on **Google Colab**, but with two important notes:
+
+1. **highway-env is CPU-based** (it won’t really use GPU much), so Colab won’t be dramatically faster than your laptop unless your laptop is very slow.
+2. It **does work fine in Colab**, as long as you install dependencies correctly.
+### What you do in Colab
+1. Upload the repo zip (`safe-nonstationary-driving-experiments_v4.zip`) to Colab
+2. Unzip it
+3. Install requirements
+4. Run training scripts
+Example Colab cell:
+***bash
+!unzip -q safe-nonstationary-driving-experiments_v4.zip -d exp
+%cd exp
+!pip -q install -r requirements.txt
+Then train (example):
+***bash
+!python -m scripts.train_discrete --preset merge_discrete_default --algo dqn --total_steps 200000 --seed 0
+***
+*** One more thing
+Colab sometimes has issues rendering environments, but since you’re **not** using `render()`, you’re safe.
+If you want, I can generate a clean **Colab notebook (`.ipynb`)** that runs:
+
+* one discrete run
+* one continuous run
+* one ablation
+* exports the LaTeX tables
+##########################################################
+The clean Colab notebook that runs:
+
+1. **One discrete run** (DQN on `merge-v0`)
+2. **One continuous run** (SAC on `highway-v0`)
+3. **One ablation** (DQN with `--no_mpc`)
+4. **Exports paper-ready LaTeX tables** (discrete vs continuous + per-env splits)
+5. **Demonstrates how constraints work** by showing, step-by-step, when the **safety shield overrides actions**, with a small logged table + an aggregate comparison shield ON vs OFF.
+
+📓 **Download the notebook (.ipynb):**
+[Download Colab_Proactive_Safety_Demo.ipynb](sandbox:/mnt/data/Colab_Proactive_Safety_Demo.ipynb)
+#######################
+For this repo, the most reliable choice is:
+
+✅ Python 3.10
+
+It’s the sweet spot for compatibility with:
+stable-baselines3
+gymnasium
+highway-env
+torch
+pandas/matplotlib
+Also works well
+Python 3.9 (usually fine)
+Python 3.11 (can work, but sometimes dependency versions are fussier)
+What Colab uses
+Colab is typically Python 3.10 right now, so you’re good by default.
+If you run locally, use:
+python --version
+and if needed, create a venv with 3.10.
+#########################
+after everything works run:
+pip freeze > requirements_locked.txt
+That creates an exact environment snapshot for reproducibility in the appendix.
+
+Keep requirements.txt (loose ranges, readable)
+
+Include requirements_locked.txt (exact freeze
+

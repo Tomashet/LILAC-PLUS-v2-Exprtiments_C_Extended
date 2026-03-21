@@ -1,0 +1,9 @@
+check,seen,unseen,status
+canonical_context_differs,"['low', 'calm', 'clean']","['high', 'aggr', 'noisy']",PASS
+tau_violation_differs,2.008065402507782,2.0,PASS
+tau_near_miss_differs,2.624544671177862,8.0,PASS
+reward_mean_differs,55.74919975,54.56722516279069,PASS
+violation_count_mean_differs,17.0625,21.825581395348838,PASS
+near_miss_count_mean_differs,5.5625,0.0,PASS
+shield_count_mean_differs,17.0625,21.825581395348838,PASS
+action_correction_mean_differs,0.666326322545886,0.6751119115857694,PASS

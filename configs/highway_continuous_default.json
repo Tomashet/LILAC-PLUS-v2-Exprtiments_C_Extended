@@ -1,0 +1,25 @@
+{
+  "env_id": "highway-v0",
+  "action_space_type": "continuous",
+  "sb3": {
+    "sac": {
+      "learning_rate": 0.0003,
+      "buffer_size": 200000,
+      "batch_size": 256,
+      "gamma": 0.99,
+      "tau": 0.005,
+      "train_freq": 1,
+      "gradient_steps": 1
+    }
+  },
+  "safety": {
+    "horizon_n": 10,
+    "epsilon": 0.5,
+    "delta_nearmiss": 1.0,
+    "d0": 2.0,
+    "h": 1.2
+  },
+  "nonstationarity": {
+    "p_stay": 0.8
+  }
+}

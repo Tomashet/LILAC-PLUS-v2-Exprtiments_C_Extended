@@ -1,0 +1,62 @@
+{
+  "env": "merge-v0",
+  "method": "baseline_sac",
+  "method_label": "baseline_sac",
+  "use_lilac": false,
+  "seed": 1,
+  "total_steps": 20000,
+  "max_episode_steps": 200,
+  "raw_context": [
+    "low",
+    "calm",
+    "clean"
+  ],
+  "canonical_context": [
+    "low",
+    "calm",
+    "clean"
+  ],
+  "regime_type": "nonstationary_seen",
+  "seen_contexts": [
+    [
+      "low",
+      "calm",
+      "clean"
+    ],
+    [
+      "low",
+      "aggr",
+      "clean"
+    ],
+    [
+      "low",
+      "calm",
+      "noisy"
+    ]
+  ],
+  "unseen_contexts": [
+    [
+      "high",
+      "aggr",
+      "noisy"
+    ],
+    [
+      "high",
+      "aggr",
+      "dropout"
+    ],
+    [
+      "high",
+      "calm",
+      "noisy"
+    ]
+  ],
+  "regime_switch_every_episodes": 1,
+  "threshold_patch": null,
+  "resolved_thresholds": null,
+  "apply_thresholds": false,
+  "use_context_constraints": false,
+  "use_adjust_speed": false,
+  "use_soft_to_hard": false,
+  "lilac_cfg": null
+}

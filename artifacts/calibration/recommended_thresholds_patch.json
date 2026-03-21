@@ -1,0 +1,10 @@
+{
+  "('high', 'aggr', 'noisy')": {
+    "tau_violation": 1.9607515096664432,
+    "tau_near_miss": 2.707141721248626
+  },
+  "('low', 'calm', 'clean')": {
+    "tau_violation": 1.9799491167068484,
+    "tau_near_miss": 2.6755370706319845
+  }
+}

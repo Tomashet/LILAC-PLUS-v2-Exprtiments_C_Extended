@@ -1,0 +1,178 @@
+This is the code for Article 3 - "Speed of adjustment as a constraint." v3
+1.2 Install dependencies
+
+Install your project requirements (recommended: use your existing requirements file if present):
+
+pip install -r requirements.txt
+
+If you don’t have a requirements file, you typically need:
+
+pip install gymnasium highway-env stable-baselines3 torch numpy pandas matplotlib tensorboard
+2) Quick Sanity Checks
+2.1 Imports
+python -c "import src.adjust_speed; import src.wrappers; import src.safety; print('IMPORTS OK')"
+2.2 Environment creation
+python -c "from scripts.common import make_env; from src.safety import SafetyParams; e,_,_=make_env('highway-v0',0,'discrete',0.8,False,False,SafetyParams(horizon_n=10,epsilon=0.5)); print('ENV OK'); e.close()"
+
+If this fails, fix before running long trainings.
+
+3) Core Concepts
+3.1 Nonstationarity (Markov context switching)
+
+A context scheduler changes the environment regime at episode boundaries. The active context id is propagated via info["ctx_id"] each step.
+
+3.2 Safety Shield
+
+A wrapper filters actions when safety risk is high (e.g., clearance too small). Optional conformal calibration inflates a safety threshold.
+
+3.3 Adjustment-Speed Safety Constraint (NEW)
+
+The module estimates:
+
+Shift speed S_env: how frequently context/regime changes (or how quickly context embeddings change)
+
+Adaptation speed S_agent: a proxy based on parameter update magnitude
+
+Unsafe if S_env > S_agent + margin
+
+When unsafe, the wrapper can pass an eps_override to the shield, making it more conservative.
+
+4) Training Entry Points
+4.1 Discrete training: DQN / PPO
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 200000 --seed 0 --run_dir highway_dqn_seed0
+
+PPO:
+
+python -m scripts.train_discrete --env highway-v0 --algo ppo --total_steps 200000 --seed 0 --run_dir highway_ppo_seed0
+
+You can also use merge-v0:
+
+python -m scripts.train_discrete --env merge-v0 --algo dqn --total_steps 200000 --seed 0 --run_dir merge_dqn_seed0
+4.2 Continuous training: SAC
+python -m scripts.train_continuous --env highway-v0 --total_steps 300000 --seed 0 --run_dir highway_sac_seed0
+5) Adjustment-Speed Monitoring (Recommended)
+
+Enable the adjustment-speed constraint via --adjust_speed.
+
+5.1 Discrete example
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 200000 --seed 0 `
+  --adjust_speed --run_dir highway_dqn_adj_seed0
+5.2 Continuous example
+python -m scripts.train_continuous --env highway-v0 --total_steps 300000 --seed 0 `
+  --adjust_speed --run_dir highway_sac_adj_seed0
+5.3 Tuning knobs
+
+--adj_shift_window (default 200): window for shift speed
+
+--adj_metric (discrete or l2): use discrete ctx switches or embedding deltas
+
+--adj_adapt_window (default 20): number of updates for adaptation speed average
+
+--adj_margin (default 0.0): unsafe if S_env > S_agent + margin
+
+--adj_temp (default 10.0): sigmoid temperature for risk score
+
+Example:
+
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 200000 --seed 0 `
+  --adjust_speed --adj_margin 0.02 --adj_temp 15 --run_dir tuned_adj_dqn_seed0
+6) Safety Shield Controls
+
+By default, the training scripts may enable the shield unless you disable it. Control with:
+
+--no_mpc
+
+--no_conformal
+
+6.1 Disable shield entirely (baseline)
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 200000 --seed 0 `
+  --no_mpc --no_conformal --run_dir baseline_no_shield
+6.2 Enable shield + adjustment speed (full system)
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 200000 --seed 0 `
+  --adjust_speed --run_dir full_shield_plus_adj
+7) Outputs, Logging, and Where to Look
+
+Each run writes into:
+
+runs/<run_dir>/
+  config.json
+  train_monitor.csv
+  models/final_model.zip
+  events.out.tfevents...  (TensorBoard)
+
+The CSV contains key columns like:
+
+timestep
+
+ctx_id
+
+violation, near_miss
+
+shield_used, shield_reason, eps, inflate
+
+adj_risk, adj_unsafe, adj_s_env, adj_s_agent, adj_eps_override
+
+8) Live Visualization (Sanity + Debug)
+
+Use the live plotter to confirm context switching + safety + adjustment-speed activation:
+
+python -m scripts.plot_live_sanity --run_dir <run_dir>
+
+Optional parameters:
+
+python -m scripts.plot_live_sanity --run_dir <run_dir> --window 4000 --pause 1.0 --viol_roll 500
+
+It shows 4 panels:
+
+ctx_id
+
+rolling violation rate
+
+adj_risk
+
+adj_unsafe
+
+9) Recommended Experiment Sequence (Do This Order)
+
+Imports + env
+
+Baseline training (no shield, no adjust speed, 5k steps)
+
+Adjust-speed only (no shield, adjust speed ON, 8k steps)
+
+Shield only (shield ON, adjust speed OFF, 12k steps)
+
+Full system (shield ON, adjust speed ON, 20k steps)
+
+Smoke test (50k steps)
+
+Full runs (200k+ steps, seeds 0/1/2)
+
+Example commands:
+
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 5000  --seed 0 --no_mpc --no_conformal --run_dir T1_baseline
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 8000  --seed 0 --no_mpc --no_conformal --adjust_speed --run_dir T2_adj_only
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 12000 --seed 0 --run_dir T3_shield_only
+python -m scripts.train_discrete --env highway-v0 --algo dqn --total_steps 20000 --seed 0 --adjust_speed --run_dir T4_shield_plus_adj
+10) Troubleshooting
+“No train_monitor.csv appears”
+
+Confirm you passed --run_dir and check runs/<run_dir>/
+
+If training runs but CSV isn’t created, the logger callback may not be getting infos yet. Check console output and confirm timesteps are increasing.
+
+“ConformalCalibrator got unexpected keyword argument 'params'”
+
+Your src/safety.py must support ConformalCalibrator(params=SafetyParams(...)) (this repo’s patched version does).
+
+“ModuleNotFoundError: src.adjust_speed”
+
+Ensure:
+
+src/__init__.py exists
+
+src/adjust_speed/__init__.py exists
+
+you are running from repo root
+
+11) Citation / Research Context

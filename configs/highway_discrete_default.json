@@ -1,0 +1,33 @@
+{
+  "env_id": "highway-v0",
+  "action_space_type": "discrete",
+  "sb3": {
+    "dqn": {
+      "learning_rate": 0.0003,
+      "buffer_size": 100000,
+      "learning_starts": 10000,
+      "batch_size": 64,
+      "gamma": 0.99,
+      "train_freq": 4,
+      "target_update_interval": 1000
+    },
+    "ppo": {
+      "learning_rate": 0.0003,
+      "n_steps": 2048,
+      "batch_size": 64,
+      "gamma": 0.99,
+      "gae_lambda": 0.95,
+      "ent_coef": 0.0
+    }
+  },
+  "safety": {
+    "horizon_n": 10,
+    "epsilon": 0.5,
+    "delta_nearmiss": 1.0,
+    "d0": 2.0,
+    "h": 1.2
+  },
+  "nonstationarity": {
+    "p_stay": 0.8
+  }
+}

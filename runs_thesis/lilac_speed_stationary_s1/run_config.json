@@ -1,0 +1,77 @@
+{
+  "env": "merge-v0",
+  "method": "lilac_speed",
+  "method_cfg": {
+    "label": "lilac_speed",
+    "use_lilac": true,
+    "use_context_constraints": false,
+    "use_adjust_speed": true,
+    "use_soft_to_hard": false,
+    "apply_thresholds": false
+  },
+  "seed": 1,
+  "total_steps": 20000,
+  "max_episode_steps": 200,
+  "context": [
+    "low",
+    "calm",
+    "clean"
+  ],
+  "regime_type": "stationary",
+  "seen_contexts": [
+    [
+      "low",
+      "calm",
+      "clean"
+    ],
+    [
+      "low",
+      "aggr",
+      "clean"
+    ],
+    [
+      "low",
+      "calm",
+      "noisy"
+    ]
+  ],
+  "unseen_contexts": [
+    [
+      "high",
+      "aggr",
+      "noisy"
+    ],
+    [
+      "high",
+      "aggr",
+      "dropout"
+    ],
+    [
+      "high",
+      "calm",
+      "noisy"
+    ]
+  ],
+  "threshold_patch": null,
+  "algo": "SAC",
+  "action_space": "Box(-1.0, 1.0, (2,), float32)",
+  "lilac_cfg": {
+    "latent_dim": 8,
+    "context_len": 32,
+    "lr": 0.0003,
+    "beta_kl": 0.2,
+    "beta_kl_anneal_steps": 50000,
+    "lambda_dec": 1.0,
+    "train_every_steps": 200,
+    "updates_per_train": 1,
+    "warmup_episodes": 5,
+    "margin": 0.0,
+    "temperature": 10.0,
+    "changepoint_delta_thresh": 0.75,
+    "changepoint_kl_thresh": 4.0,
+    "changepoint_cooldown_episodes": 2,
+    "var_inflate_on_cp": 10.0,
+    "risk_w_shift": 1.0,
+    "risk_w_uncert": 0.5
+  }
+}
