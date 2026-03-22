@@ -1,0 +1,26 @@
+{
+  "lilac_base": {
+    "train_method": null,
+    "extra_cli_args": {},
+    "ready": false,
+    "notes": "Fill this after checking local implementation."
+  },
+  "lilac_cs1": {
+    "train_method": null,
+    "extra_cli_args": {},
+    "ready": false,
+    "notes": "Fill this after checking local implementation."
+  },
+  "lilac_cs2": {
+    "train_method": null,
+    "extra_cli_args": {},
+    "ready": false,
+    "notes": "Fill this after checking local implementation."
+  },
+  "lilac_cs3": {
+    "train_method": null,
+    "extra_cli_args": {},
+    "ready": false,
+    "notes": "Fill this after checking local implementation."
+  }
+}
