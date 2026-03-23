@@ -76,6 +76,10 @@ def parse_args() -> argparse.Namespace:
             "cb+sh",
             "as+sh",
             "cb+as+sh",
+            "lilac_base",
+            "fixed_cb",
+            "fixed_as",
+            "fixed_sh",
         ],
     )
 
@@ -306,6 +310,40 @@ def get_method_config(method: str) -> Dict[str, Any]:
             "use_soft_to_hard": True,
             "use_fixed_constraints": False,
             "fixed_strategy": None,
+            "apply_thresholds": True,
+        },
+
+        # Stage S-extension methods
+        "lilac_base": {
+            "use_context_constraints": False,
+            "use_adjust_speed": False,
+            "use_soft_to_hard": False,
+            "use_fixed_constraints": False,
+            "fixed_strategy": None,
+            "apply_thresholds": False,
+        },
+        "fixed_cb": {
+            "use_context_constraints": True,
+            "use_adjust_speed": False,
+            "use_soft_to_hard": False,
+            "use_fixed_constraints": True,
+            "fixed_strategy": "A",
+            "apply_thresholds": True,
+        },
+        "fixed_as": {
+            "use_context_constraints": False,
+            "use_adjust_speed": True,
+            "use_soft_to_hard": False,
+            "use_fixed_constraints": True,
+            "fixed_strategy": "A",
+            "apply_thresholds": True,
+        },
+        "fixed_sh": {
+            "use_context_constraints": False,
+            "use_adjust_speed": False,
+            "use_soft_to_hard": True,
+            "use_fixed_constraints": True,
+            "fixed_strategy": "A",
             "apply_thresholds": True,
         },
     }

@@ -10,19 +10,26 @@ from pathlib import Path
 from threading import Lock
 from typing import Dict, List, Tuple
 
-from scripts.stageS_extension_specs import get_stage_s_extension_specs
-
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS_ROOT = ROOT / "runs_stageS_extension"
 ARTIFACTS_ROOT = ROOT / "artifacts"
-TRAIN_MODULE = "scripts.train_stageS_extension"
+TRAIN_MODULE = "scripts.train_continuous"
 LAUNCHER_LOG = ARTIFACTS_ROOT / "stageS_extension_launcher_log.jsonl"
 
 ENV_NAME = "merge-v0"
 TOTAL_STEPS = 15000
 MAX_EPISODE_STEPS = 200
 DEFAULT_MAX_WORKERS = 4
+
+METHODS = [
+    "lilac_base",
+    "fixed_cb",
+    "fixed_as",
+    "fixed_sh",
+    "cb",
+    "fixed_full_A",
+]
 
 REGIMES = [
     "stationary",
@@ -35,13 +42,13 @@ SEEDS = [0, 1, 2]
 
 @dataclass(frozen=True)
 class RunSpec:
-    extension_method: str
+    method: str
     regime: str
     seed: int
 
     @property
     def run_name(self) -> str:
-        return f"{self.extension_method}__{self.regime}__s{self.seed}"
+        return f"{self.method}__{self.regime}__s{self.seed}"
 
     @property
     def run_dir(self) -> Path:
@@ -119,8 +126,7 @@ def looks_failed(run_dir: Path) -> bool:
         "modulenotfounderror",
         "error: unrecognized arguments",
         "the following arguments are required",
-        "is not mapped yet",
-        "has no train_method mapping",
+        "unknown method",
     ]
     return any(tok in text for tok in failure_tokens)
 
@@ -158,8 +164,6 @@ def build_command(spec: RunSpec) -> List[str]:
         sys.executable,
         "-m",
         TRAIN_MODULE,
-        "--extension_method",
-        spec.extension_method,
         "--env",
         ENV_NAME,
         "--total_steps",
@@ -172,28 +176,18 @@ def build_command(spec: RunSpec) -> List[str]:
         spec.regime,
         "--run_dir",
         str(spec.run_dir),
+        "--method",
+        spec.method,
     ]
 
 
 def build_all_runs() -> List[RunSpec]:
-    specs = get_stage_s_extension_specs()
     runs: List[RunSpec] = []
-    for ext in specs:
+    for method in METHODS:
         for regime in REGIMES:
             for seed in SEEDS:
-                runs.append(RunSpec(extension_method=ext.name, regime=regime, seed=seed))
+                runs.append(RunSpec(method=method, regime=regime, seed=seed))
     return runs
-
-
-def print_extension_manifest() -> None:
-    safe_print("\nSTAGE S-EXTENSION METHOD MANIFEST")
-    safe_print("-" * 110)
-    for spec in get_stage_s_extension_specs():
-        safe_print(
-            f"{spec.name:>14} | ready={str(spec.ready):<5} | "
-            f"train_method={str(spec.train_method):<16} | extra_cli_args={spec.extra_cli_args} | {spec.notes}"
-        )
-    safe_print("-" * 110)
 
 
 def classify_run_state(spec: RunSpec) -> str:
@@ -240,13 +234,16 @@ def preflight() -> List[RunSpec]:
     safe_print(f"Env:              {ENV_NAME}")
     safe_print(f"Total steps:      {TOTAL_STEPS}")
     safe_print(f"Max ep steps:     {MAX_EPISODE_STEPS}")
+    safe_print(f"Methods:          {METHODS}")
     safe_print(f"Regimes:          {REGIMES}")
     safe_print(f"Seeds:            {SEEDS}")
     safe_print("-" * 90)
     safe_print(f"Expanded runs:    {len(runs)}")
     safe_print("=" * 90)
 
-    print_extension_manifest()
+    expected = 54
+    if len(runs) != expected:
+        raise ValueError(f"Expected {expected} runs, got {len(runs)}")
 
     try:
         __import__("scripts")
@@ -294,7 +291,7 @@ def run_one(spec: RunSpec) -> Tuple[str, str]:
             "event": "launch",
             "run_name": run_name,
             "run_dir": str(run_dir),
-            "extension_method": spec.extension_method,
+            "method": spec.method,
             "regime": spec.regime,
             "seed": spec.seed,
             "cmd": cmd,
