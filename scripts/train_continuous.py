@@ -15,6 +15,7 @@ from stable_baselines3.common.monitor import Monitor
 
 from src.context import (
     OnlineThresholdStats,
+    ThresholdRecord,
     SimilarityConfig,
     canonicalize_context,
     get_context_thresholds,
@@ -610,8 +611,9 @@ def compute_fixed_baseline_A(
     tau_v = []
     tau_n = []
     for rec in threshold_patch.values():
-        tv = float(getattr(rec, "tau_violation", rec["tau_violation"]))
-        tn = float(getattr(rec, "tau_near_miss", rec["tau_near_miss"]))
+        record = ThresholdRecord.from_any(rec)
+        tv = record.tau_violation
+        tn = record.tau_near_miss
         tau_v.append(tv)
         tau_n.append(max(tn, tv))
 
