@@ -1,0 +1,12 @@
+# Core versions used in the short execution check; install CPU torch first.
+numpy==1.26.4
+gymnasium==0.29.1
+highway-env==1.8.2
+stable-baselines3==2.3.2
+torch>=2.0
+scipy>=1.10
+matplotlib>=3.7
+pandas>=2.0
+tensorboard>=2.14
+tqdm>=4.65
+rich>=13.0

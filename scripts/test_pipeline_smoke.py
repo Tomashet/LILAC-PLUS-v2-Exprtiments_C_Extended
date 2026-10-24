@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import math
 import subprocess
 import sys
 from pathlib import Path
@@ -67,13 +69,19 @@ def verify_run_dir(run_dir: Path) -> None:
             f"Checked: {model_zip} and {model_dir}"
         )
 
-    print(f"[verify] OK: {run_dir}")
+    with (run_dir / "train_monitor.csv").open() as stream:
+        rows = list(csv.DictReader(line for line in stream if not line.startswith("#")))
+    if not rows or any(not math.isfinite(float(row["r"])) for row in rows):
+        raise ValueError(f"Missing completed episodes or non-finite returns: {run_dir}")
+    print(f"[verify] OK: {run_dir} ({len(rows)} completed episodes)")
 
 
 def main() -> None:
     args = parse_args()
+    if args.steps < 20:
+        raise ValueError("--steps must be at least 20 to finish an episode")
     run_root = Path(args.run_root)
-    run_root.mkdir(parents=True, exist_ok=True)
+    run_root.mkdir(parents=True, exist_ok=False)
 
     # ----------------------------------------------------------
     # Test 1: Threshold audit without patch
@@ -101,8 +109,12 @@ def main() -> None:
             sys.executable,
             "-m",
             "scripts.train_continuous",
+            "--method",
+            "cb+as+sh",
+            "--max_episode_steps",
+            "20",
             "--env",
-            "merge-v0",
+            "highway-v0",
             "--total_steps",
             str(args.steps),
             "--seed",
@@ -143,8 +155,12 @@ def main() -> None:
                 sys.executable,
                 "-m",
                 "scripts.train_continuous",
+                "--method",
+                "fixed_full_A",
+                "--max_episode_steps",
+                "20",
                 "--env",
-                "merge-v0",
+                "highway-v0",
                 "--total_steps",
                 str(args.steps),
                 "--seed",

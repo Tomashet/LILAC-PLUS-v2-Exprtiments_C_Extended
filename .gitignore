@@ -14,3 +14,11 @@ runs/
 Thumbs.db
 .vscode/
 .idea/
+
+# New local experiments and tooling (already tracked results stay tracked)
+runs_*/
+runs2/
+.pytest_cache/
+.env
+.env.*
+!.env.example
